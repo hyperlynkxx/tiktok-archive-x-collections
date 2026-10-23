@@ -5,6 +5,8 @@ sin conexión en un visor donde decidís qué se queda.**
 
 [Read in English](README.md)
 
+**[Probá la demo en vivo](https://hyperlynkxx.github.io/tiktok-archive-x-collections/)**, con medios de muestra generados: dos colecciones, tres videos y tres slideshows.
+
 TikTok deja guardar videos en colecciones, pero no deja exportarlas. La descarga oficial de datos
 trae los favoritos como una lista de links sueltos, sin las colecciones. Esta herramienta cubre eso:
 

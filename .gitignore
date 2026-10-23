@@ -5,3 +5,6 @@ tiktok-decisions-*.json
 *cookies*.txt
 node_modules/
 .DS_Store
+
+# The public demo, generated with demo/make-demo.mjs, is the one archive that goes in
+!docs/manifests/tiktok-collections-demo.json

@@ -5,6 +5,8 @@ offline in a viewer where you decide what stays.**
 
 [Leer en español](README.es.md)
 
+**[Try the live demo](https://hyperlynkxx.github.io/tiktok-archive-x-collections/)**, with generated sample media: two collections, three videos and three slideshows.
+
 TikTok lets you save videos into collections, but gives you no way to export them. Its official data
 download lists your favorites as bare links, without the collections. This tool fills that gap:
 

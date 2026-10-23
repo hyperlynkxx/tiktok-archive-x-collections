@@ -1,0 +1,148 @@
+{
+ "account": "demo",
+ "extracted": "2026-10-23T19:16:00.291Z",
+ "collections": [
+  {
+   "id": "1",
+   "name": "🎞️ things to rewatch",
+   "total": 4,
+   "items": [
+    {
+     "id": "7000000000000000001",
+     "author": "sample.creator",
+     "nickname": "Sample Creator",
+     "text": "Sample video 1: a calm loop. Generated for the demo, not a real TikTok. #demo #archive",
+     "created": 1790190955,
+     "duration": 8,
+     "likes": 12400,
+     "views": 196000,
+     "comments": 310,
+     "saves": 900,
+     "cover": "",
+     "type": "video",
+     "music": "original sound · Sample Creator"
+    },
+    {
+     "id": "7000000000000000002",
+     "author": "sample.creator",
+     "nickname": "Sample Creator",
+     "text": "Sample video 2: another saved clip. Generated for the demo, not a real TikTok. #demo #archive",
+     "created": 1789413355,
+     "duration": 8,
+     "likes": 24800,
+     "views": 294000,
+     "comments": 620,
+     "saves": 1800,
+     "cover": "",
+     "type": "video",
+     "music": "original sound · Sample Creator"
+    },
+    {
+     "id": "7000000000000000003",
+     "author": "sample.creator",
+     "nickname": "Sample Creator",
+     "text": "Sample video 3: in both collections. Generated for the demo, not a real TikTok. #demo #archive",
+     "created": 1788635755,
+     "duration": 8,
+     "likes": 37200,
+     "views": 392000,
+     "comments": 930,
+     "saves": 2700,
+     "cover": "",
+     "type": "video",
+     "music": "original sound · Sample Creator"
+    },
+    {
+     "id": "7000000000000000011",
+     "author": "sample.photos",
+     "nickname": "Sample Photos",
+     "text": "Slideshow 1: 4 photos with audio. Use ← → to flip through them. #demo #slideshow",
+     "created": 1791746155,
+     "duration": null,
+     "likes": 5300,
+     "views": 41000,
+     "comments": 120,
+     "saves": 640,
+     "cover": "",
+     "type": "photos",
+     "photos": [],
+     "audio": "",
+     "music": "demo chord · Sample Photos"
+    }
+   ]
+  },
+  {
+   "id": "2",
+   "name": "📸 slideshows i loved",
+   "total": 4,
+   "items": [
+    {
+     "id": "7000000000000000012",
+     "author": "sample.photos",
+     "nickname": "Sample Photos",
+     "text": "Slideshow 2: 4 photos with audio. Use ← → to flip through them. #demo #slideshow",
+     "created": 1791141355,
+     "duration": null,
+     "likes": 10600,
+     "views": 82000,
+     "comments": 240,
+     "saves": 1280,
+     "cover": "",
+     "type": "photos",
+     "photos": [],
+     "audio": "",
+     "music": "demo chord · Sample Photos"
+    },
+    {
+     "id": "7000000000000000013",
+     "author": "sample.photos",
+     "nickname": "Sample Photos",
+     "text": "Slideshow 3: 4 photos with audio. Use ← → to flip through them. #demo #slideshow",
+     "created": 1790536555,
+     "duration": null,
+     "likes": 15900,
+     "views": 123000,
+     "comments": 360,
+     "saves": 1920,
+     "cover": "",
+     "type": "photos",
+     "photos": [],
+     "audio": "",
+     "music": "demo chord · Sample Photos"
+    },
+    {
+     "id": "7000000000000000003",
+     "author": "sample.creator",
+     "nickname": "Sample Creator",
+     "text": "Sample video 3: in both collections. Generated for the demo, not a real TikTok. #demo #archive",
+     "created": 1788635755,
+     "duration": 8,
+     "likes": 37200,
+     "views": 392000,
+     "comments": 930,
+     "saves": 2700,
+     "cover": "",
+     "type": "video",
+     "music": "original sound · Sample Creator"
+    },
+    {
+     "id": "7000000000000000011",
+     "author": "sample.photos",
+     "nickname": "Sample Photos",
+     "text": "Slideshow 1: 4 photos with audio. Use ← → to flip through them. #demo #slideshow",
+     "created": 1791746155,
+     "duration": null,
+     "likes": 5300,
+     "views": 41000,
+     "comments": 120,
+     "saves": 640,
+     "cover": "",
+     "type": "photos",
+     "photos": [],
+     "audio": "",
+     "music": "demo chord · Sample Photos"
+    }
+   ]
+  }
+ ]
+}

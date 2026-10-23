@@ -295,7 +295,14 @@ h1 { font: 500 40px/1.05 var(--serif); color: var(--strong); margin: 0; letter-s
   function open(i) { current = i; photo = 0; stage(); sheet(); $('modal').classList.add('open'); }
   function close() { $('stage').innerHTML = ''; $('modal').classList.remove('open'); current = -1; }
   function move(n) { if (!view.length) return; current = (current + n + view.length) % view.length; photo = 0; stage(); sheet(); }
-  function stepPhoto(n) { const it = D.items[view[current]]; if (it?.type !== 'photos') return; photo = (photo + n + it.p) % it.p; const a = $('audio'); const t = a?.currentTime; stage(); if (a && t) $('audio').currentTime = t; }
+  // Only the image and the dots change, so there's no black flash and the audio keeps playing
+  function stepPhoto(n) {
+    const id = view[current], it = D.items[id]; if (it?.type !== 'photos' || !it.p) return;
+    photo = (photo + n + it.p) % it.p;
+    const img = document.querySelector('#stage img'); if (!img) return;
+    img.src = url(`photos/${id}/${String(photo + 1).padStart(2, '0')}.jpg`);
+    document.querySelectorAll('#stage .dots i').forEach((d, k) => d.classList.toggle('on', k === photo));
+  }
 
   $('list').addEventListener('click', (e) => { const b = e.target.closest('.col'); if (!b) return; collection = b.dataset.c || null; list(); refilter(); window.scrollTo(0, 0); });
   $('picker').addEventListener('change', (e) => { collection = e.target.value || null; list(); refilter(); });
