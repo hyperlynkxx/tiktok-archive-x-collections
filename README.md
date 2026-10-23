@@ -72,7 +72,8 @@ Some videos are age-restricted or only visible when logged in, so yt-dlp needs y
 
 ### 2. Extract the manifest
 
-On a tiktok.com tab where you're logged in, open DevTools (F12), then **Console**. Paste the whole
+Open https://www.tiktok.com/explore, logged in. Any regular page works, but the account data
+`extract.js` needs isn't on every page. Open DevTools (F12), then **Console**. Paste the whole
 content of [`extract.js`](extract.js) and press Enter. If Chrome asks, type `allow pasting` first.
 
 It prints one line per collection and then downloads `tiktok-collections-YYYY-MM-DD.json`. It takes

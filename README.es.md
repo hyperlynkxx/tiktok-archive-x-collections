@@ -66,7 +66,8 @@ Algunos videos tienen restricción de edad o solo se ven con sesión, así que y
 
 ### 2. Sacá el manifiesto
 
-En una pestaña de tiktok.com con tu sesión, abrí DevTools (F12) y andá a **Console**. Pegá entero
+Abrí https://www.tiktok.com/explore con tu sesión. Sirve cualquier página común, pero no todas traen
+los datos de la cuenta que necesita `extract.js`. Abrí DevTools (F12) y andá a **Console**. Pegá entero
 [`extract.js`](extract.js) y apretá Enter. Si Chrome lo pide, escribí antes `allow pasting`.
 
 Va mostrando una línea por colección, y al final baja `tiktok-collections-AAAA-MM-DD.json`. Tarda:

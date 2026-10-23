@@ -5,7 +5,7 @@
 // or an empty body, because every request needs a signature that TikTok's own script adds. Inside a
 // tiktok.com tab that script patches fetch() and signs for you, so plain fetch() calls just work.
 //
-// HOW TO RUN: open https://www.tiktok.com while logged in, open DevTools > Console, paste this whole
+// HOW TO RUN: open https://www.tiktok.com/explore while logged in, open DevTools > Console, paste this whole
 // file and press Enter (or let an agent run it through Claude in Chrome). It downloads
 // `tiktok-collections-YYYY-MM-DD.json`, which is what `download.mjs` reads. Progress is printed per
 // collection and also exposed as `window.__tiktokProgress`, so an agent can poll it.
@@ -29,7 +29,7 @@
   // The logged-in account, not whatever profile the tab happens to show
   const data = JSON.parse(document.getElementById('__UNIVERSAL_DATA_FOR_REHYDRATION__')?.textContent || '{}');
   const me = data.__DEFAULT_SCOPE__?.['webapp.app-context']?.user;
-  if (!me?.secUid) throw new Error('No logged-in session in this tab');
+  if (!me?.secUid) throw new Error('No logged-in session found: open https://www.tiktok.com/explore logged in, reload, and run this again');
 
   const collections = [];
   for (let cursor = '0', more = true; more; ) {
