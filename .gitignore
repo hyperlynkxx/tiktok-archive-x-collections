@@ -1,0 +1,7 @@
+# Your archive and your data never go in the repo
+archive/
+tiktok-collections-*.json
+tiktok-decisions-*.json
+*cookies*.txt
+node_modules/
+.DS_Store

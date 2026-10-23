@@ -1,0 +1,12 @@
+{
+  "name": "tiktok-archive-x-collections",
+  "version": "1.0.0",
+  "description": "Back up your saved TikTok videos by collection, in H.264 with slideshows, and browse them offline",
+  "license": "MIT",
+  "private": true,
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "download": "node download.mjs",
+    "build": "node build.mjs"
+  }
+}

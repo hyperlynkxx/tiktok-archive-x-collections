@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TikTok archive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --font: "Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  --serif: "Fraunces", ui-serif, Georgia, serif;
+  --ease: cubic-bezier(.22, 1, .36, 1);
+  --page: #fafafa; --text: #1a1a1a; --strong: #000; --muted: #9f9f9f; --soft: #6b6b6b;
+  --line: #e4e4e4; --faint: #f2f2f2; --card: #fff; --hover: #f6f6f6;
+  --bad: #b4443a; --bad-bg: #fbecea; --star: #b8860b;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --page: #0e0e0e; --text: #c4c4c4; --strong: #fff; --muted: #6e6e6e; --soft: #8f8f8f;
+    --line: #1f1f1f; --faint: #161616; --card: #141414; --hover: #1a1a1a;
+    --bad: #e58a80; --bad-bg: #2a1614; --star: #f0c45a;
+  }
+}
+:root[data-theme="dark"] {
+  --page: #0e0e0e; --text: #c4c4c4; --strong: #fff; --muted: #6e6e6e; --soft: #8f8f8f;
+  --line: #1f1f1f; --faint: #161616; --card: #141414; --hover: #1a1a1a;
+  --bad: #e58a80; --bad-bg: #2a1614; --star: #f0c45a;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--page); color: var(--text); font: 14px/1.45 var(--font); -webkit-font-smoothing: antialiased; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+.app { display: grid; grid-template-columns: 250px 1fr; min-height: 100vh; }
+.side { position: sticky; top: 0; height: 100vh; overflow-y: auto; border-right: 1px solid var(--line); padding: 28px 10px 40px; }
+.side h2 { font: 500 13px var(--font); color: var(--muted); margin: 0 10px 10px; letter-spacing: .02em; }
+.col { width: 100%; display: flex; justify-content: space-between; gap: 8px; padding: 7px 10px; border-radius: 8px; text-align: left; color: var(--soft); }
+.col:hover { background: var(--hover); color: var(--strong); }
+.col[aria-pressed="true"] { background: var(--strong); color: var(--page); }
+.col .n { font-size: 12px; opacity: .7; font-variant-numeric: tabular-nums; }
+.col .name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.page { padding: 40px 28px 120px; min-width: 0; }
+.head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; margin-bottom: 22px; }
+.eyebrow { font-size: 12px; color: var(--muted); letter-spacing: .02em; margin-bottom: 6px; }
+h1 { font: 500 40px/1.05 var(--serif); color: var(--strong); margin: 0; letter-spacing: -.01em; }
+.numbers { display: flex; gap: 18px; font-size: 12px; color: var(--muted); margin-top: 10px; flex-wrap: wrap; }
+.numbers b { color: var(--strong); font-weight: 500; }
+.theme { width: 34px; height: 34px; border-radius: 10px; border: 1px solid var(--line); display: grid; place-items: center; color: var(--soft); flex: none; }
+.theme:hover { background: var(--hover); }
+.bar { position: sticky; top: 0; z-index: 5; background: var(--page); padding: 12px 0; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; border-bottom: 1px solid var(--line); margin-bottom: 18px; }
+.search { flex: 1 1 240px; display: flex; align-items: center; gap: 8px; height: 36px; padding: 0 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--card); }
+.search input { flex: 1; border: 0; outline: 0; background: none; color: var(--strong); font: inherit; min-width: 0; }
+.search svg { color: var(--muted); flex: none; }
+.segment { display: flex; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--card); flex-wrap: wrap; }
+.segment button { padding: 0 12px; height: 34px; font-size: 13px; color: var(--soft); white-space: nowrap; }
+.segment button[aria-pressed="true"] { background: var(--strong); color: var(--page); }
+.button { height: 36px; padding: 0 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--card); font-size: 13px; color: var(--soft); white-space: nowrap; }
+.button:hover { color: var(--strong); background: var(--hover); }
+.picker { display: none; height: 36px; border: 1px solid var(--line); border-radius: 10px; background: var(--card); color: var(--strong); font: inherit; padding: 0 8px; max-width: 100%; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 14px; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; transition: transform .2s var(--ease), border-color .2s; }
+.card:hover { transform: translateY(-2px); border-color: var(--soft); }
+.card.s { border-color: var(--star); }
+.card.t { opacity: .38; }
+.cover { position: relative; aspect-ratio: 9/16; background: var(--faint); cursor: pointer; overflow: hidden; }
+.cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cover .tag { position: absolute; left: 8px; top: 8px; font-size: 11px; padding: 2px 7px; border-radius: 6px; background: rgba(0,0,0,.6); color: #fff; }
+.cover .tag.bad { background: var(--bad); }
+.cover .empty { position: absolute; inset: 0; display: grid; place-items: center; color: var(--muted); font-size: 12px; padding: 12px; text-align: center; }
+.info { padding: 10px 10px 6px; flex: 1; }
+.author { font-weight: 500; color: var(--strong); font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.text { font-size: 12px; color: var(--soft); line-height: 1.4; max-height: 34px; overflow: hidden; margin-top: 3px; }
+.actions { display: flex; justify-content: space-between; padding: 4px 6px 8px; }
+.action { width: 32px; height: 32px; border-radius: 8px; display: grid; place-items: center; color: var(--muted); transition: background .15s, color .15s; }
+.action:hover { background: var(--hover); color: var(--strong); }
+.action.on.star { color: var(--star); }
+.action.on.trash { color: var(--bad); background: var(--bad-bg); }
+.action a { color: inherit; display: grid; place-items: center; }
+.more { height: 1px; }
+.none { color: var(--muted); padding: 60px 0; text-align: center; }
+.modal { position: fixed; inset: 0; background: rgba(0,0,0,.94); z-index: 50; display: none; align-items: center; justify-content: center; gap: 28px; padding: 20px; color: #ddd; }
+.modal.open { display: flex; }
+.stage { position: relative; height: 90vh; aspect-ratio: 9/16; max-width: 56vw; background: #000; border-radius: 14px; overflow: hidden; display: grid; place-items: center; }
+.stage video, .stage img { width: 100%; height: 100%; object-fit: contain; }
+.stage .error { padding: 24px; text-align: center; font-size: 13px; color: #aaa; }
+.stage .error a { color: #fff; }
+.dots { position: absolute; bottom: 10px; left: 0; right: 0; display: flex; justify-content: center; gap: 5px; }
+.dots i { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,.35); }
+.dots i.on { background: #fff; }
+.step { position: absolute; top: 50%; transform: translateY(-50%); width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,.45); color: #fff; font-size: 18px; }
+.step.left { left: 8px; } .step.right { right: 8px; }
+.sheet { width: 300px; flex: none; display: flex; flex-direction: column; gap: 12px; max-height: 90vh; overflow-y: auto; }
+.sheet .author { color: #fff; font-size: 16px; }
+.sheet .nick { color: #888; font-size: 13px; margin-top: -8px; }
+.sheet .desc { font-size: 13px; line-height: 1.6; color: #ccc; white-space: pre-wrap; }
+.sheet .meta { font-size: 12px; color: #888; display: grid; gap: 4px; }
+.sheet .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.sheet .chips span { font-size: 11px; border: 1px solid #333; border-radius: 6px; padding: 1px 7px; color: #aaa; }
+.sheet .buttons { display: flex; gap: 8px; flex-wrap: wrap; }
+.sheet .buttons button, .sheet .buttons a { height: 34px; padding: 0 12px; border-radius: 9px; border: 1px solid #333; color: #ddd; font-size: 13px; display: inline-flex; align-items: center; gap: 6px; text-decoration: none; }
+.sheet .buttons .on.star { border-color: #f0c45a; color: #f0c45a; }
+.sheet .buttons .on.trash { border-color: #e58a80; color: #e58a80; }
+.sheet .help { font-size: 11px; color: #555; line-height: 1.7; }
+.close { position: absolute; top: 14px; right: 18px; font-size: 26px; color: #fff; opacity: .6; }
+.close:hover { opacity: 1; }
+.counter { font-size: 12px; color: #555; }
+@media (max-width: 760px) {
+  .app { grid-template-columns: 1fr; }
+  .side { display: none; }
+  .picker { display: block; flex: 1 1 100%; }
+  .page { padding: 28px 16px 100px; }
+  h1 { font-size: 30px; }
+  .grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+  .modal { flex-direction: column; gap: 12px; padding: 12px; overflow-y: auto; justify-content: flex-start; }
+  .stage { height: 70vh; max-width: 100%; }
+  .sheet { width: 100%; max-height: none; }
+}
+</style>
+<script>window.TIKTOK_BASE = "__BASE__";</script>
+<script src="__BASE__data.js"></script>
+</head>
+<body>
+<div class="app">
+  <nav class="side"><h2>Collections</h2><div id="list"></div></nav>
+  <main class="page">
+    <div class="head">
+      <div>
+        <div class="eyebrow" id="eyebrow"></div>
+        <h1 id="title">TikTok</h1>
+        <div class="numbers" id="numbers"></div>
+      </div>
+      <button class="theme" id="theme" title="Toggle theme" aria-label="Toggle theme">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </div>
+    <div class="bar">
+      <select class="picker" id="picker" aria-label="Collection"></select>
+      <label class="search">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="search" placeholder="Search text, author or music" autocomplete="off">
+      </label>
+      <div class="segment" id="filter">
+        <button data-f="all" aria-pressed="true">All</button>
+        <button data-f="undecided">Undecided</button>
+        <button data-f="s">Starred</button>
+        <button data-f="t">Trash</button>
+        <button data-f="photos">Slideshows</button>
+        <button data-f="bad">Failed</button>
+      </div>
+      <button class="button" id="export">Export decisions</button>
+    </div>
+    <div class="grid" id="grid"></div>
+    <div class="none" id="none" hidden>Nothing matches.</div>
+    <div class="more" id="more"></div>
+  </main>
+</div>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true">
+  <button class="close" id="close" aria-label="Close">×</button>
+  <div class="stage" id="stage"></div>
+  <div class="sheet" id="sheet"></div>
+</div>
+
+<script>
+(() => {
+  const D = window.TIKTOK;
+  if (!D) {
+    document.getElementById('grid').innerHTML = '<div class="none">Can\'t find <code>data.js</code> in the archive. If the folder lives in a cloud drive in streaming mode, make it available offline.</div>';
+    return;
+  }
+  const KEY = 'tiktok-archive-decisions';
+  const marks = (() => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return {}; } })();
+  for (const id of D.starred || []) if (!marks[id]) marks[id] = 's';
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(marks)); } catch {} };
+  try { const t = localStorage.getItem('tiktok-archive-theme'); if (t) document.documentElement.dataset.theme = t; } catch {}
+
+  const $ = (id) => document.getElementById(id);
+  const esc = (t) => String(t ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const num = (n) => n == null ? '' : n >= 1e6 ? (n / 1e6).toFixed(1).replace('.0', '') + 'M' : n >= 1e3 ? Math.round(n / 1e3) + 'k' : String(n);
+  const date = (s) => s ? new Date(s * 1000).toLocaleDateString() : '';
+  const link = (id) => `https://www.tiktok.com/@${D.items[id]?.a || '_'}/video/${id}`;
+  const url = (path) => window.TIKTOK_BASE + path.split('/').map(encodeURIComponent).join('/');
+  const inCollections = {};
+  for (const c of D.collections) for (const id of c.ids) (inCollections[id] ||= []).push(c.name);
+  const everything = [...new Set(D.collections.flatMap((c) => c.ids))];
+
+  let collection = null, filter = 'all', query = '', view = [], shown = 0, current = -1, photo = 0;
+
+  const STAR = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg>';
+  const TRASH = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>';
+  const OUT = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 4h6v6M20 4l-9 9M18 14v6H4V6h6"/></svg>';
+  const ids = () => collection ? D.collections.find((c) => c.name === collection).ids : everything;
+
+  function list() {
+    const row = (name, n, key) => `<button class="col" data-c="${esc(key)}" aria-pressed="${collection === key}"><span class="name">${esc(name)}</span><span class="n">${n}</span></button>`;
+    $('list').innerHTML = row('All', everything.length, null) + D.collections.map((c) => row(c.name, c.ids.length, c.name)).join('');
+    $('picker').innerHTML = `<option value="">All (${everything.length})</option>` + D.collections.map((c) => `<option ${collection === c.name ? 'selected' : ''}>${esc(c.name)}</option>`).join('');
+  }
+
+  function numbers() {
+    const all = ids();
+    const s = all.filter((id) => marks[id] === 's').length, t = all.filter((id) => marks[id] === 't').length;
+    const bad = all.filter((id) => D.items[id]?.state !== 'ok').length;
+    $('numbers').innerHTML = `<span><b>${all.length}</b> items</span><span><b>${s}</b> starred</span><span><b>${t}</b> trashed</span><span><b>${all.length - s - t}</b> undecided</span>${bad ? `<span><b>${bad}</b> without file</span>` : ''}`;
+  }
+
+  function refilter() {
+    const q = query.toLowerCase();
+    view = ids().filter((id) => {
+      const it = D.items[id]; if (!it) return false;
+      const m = marks[id];
+      if (filter === 'undecided' && m) return false;
+      if ((filter === 's' || filter === 't') && m !== filter) return false;
+      if (filter === 'photos' && it.type !== 'photos') return false;
+      if (filter === 'bad' && it.state === 'ok') return false;
+      return !q || `${it.t} ${it.a} ${it.n} ${it.m}`.toLowerCase().includes(q);
+    });
+    $('title').textContent = collection || 'All collections';
+    $('eyebrow').textContent = `@${D.account} · extracted ${new Date(D.extracted).toLocaleDateString()}`;
+    numbers();
+    $('grid').innerHTML = ''; shown = 0;
+    $('none').hidden = view.length > 0;
+    more();
+  }
+
+  function card(id, i) {
+    const it = D.items[id], m = marks[id] || '';
+    const tag = it.state !== 'ok' ? `<span class="tag bad">${it.state}</span>` : it.type === 'photos' ? `<span class="tag">${it.p} photos</span>` : '';
+    // The cover is requested even if data.js says it isn't there yet: the disk can be ahead of the last build
+    const img = it.state === 'failed' ? `<div class="empty">${esc(it.reason)}</div>`
+      : `<img loading="lazy" src="${url(`covers/${id}.jpg`)}" alt="" onload="this.parentNode.querySelector('.tag.bad')?.remove()" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'empty',textContent:'not downloaded yet'}))">`;
+    return `<article class="card ${m}" data-i="${i}" data-id="${id}">
+      <div class="cover" data-open="${i}">${img}${tag}</div>
+      <div class="info"><div class="author">@${esc(it.a)}</div><div class="text">${esc(it.t)}</div></div>
+      <div class="actions">
+        <button class="action star ${m === 's' ? 'on' : ''}" data-mark="s" title="Star (S)">${STAR}</button>
+        <span class="action"><a href="${link(id)}" target="_blank" rel="noopener" title="Open on TikTok">${OUT}</a></span>
+        <button class="action trash ${m === 't' ? 'on' : ''}" data-mark="t" title="Trash (D)">${TRASH}</button>
+      </div></article>`;
+  }
+
+  function more() {
+    const to = Math.min(view.length, shown + 120);
+    $('grid').insertAdjacentHTML('beforeend', view.slice(shown, to).map((id, k) => card(id, shown + k)).join(''));
+    shown = to;
+  }
+  new IntersectionObserver((e) => { if (e[0].isIntersecting && shown < view.length) more(); }, { rootMargin: '800px' }).observe($('more'));
+
+  function mark(id, value) {
+    marks[id] = marks[id] === value ? undefined : value;
+    if (!marks[id]) delete marks[id];
+    save();
+    numbers();
+    const c = document.querySelector(`.card[data-id="${id}"]`);
+    if (c) {
+      c.classList.remove('s', 't'); if (marks[id]) c.classList.add(marks[id]);
+      c.querySelector('.star').classList.toggle('on', marks[id] === 's');
+      c.querySelector('.trash').classList.toggle('on', marks[id] === 't');
+    }
+    if (current >= 0) sheet();
+  }
+
+  function stage() {
+    const id = view[current], it = D.items[id], e = $('stage');
+    if (it.state === 'failed' || (it.state !== 'ok' && it.type === 'photos')) { e.innerHTML = `<div class="error">Not in the archive: ${esc(it.reason || it.state)}.<br><br><a href="${link(id)}" target="_blank" rel="noopener">Open on TikTok</a></div>`; return; }
+    if (it.type === 'photos') {
+      const n = Math.max(it.p, 1); photo = Math.min(photo, n - 1);
+      e.innerHTML = `<img src="${url(`photos/${id}/${String(photo + 1).padStart(2, '0')}.jpg`)}" alt="">`
+        + (n > 1 ? `<button class="step left" data-photo="-1">‹</button><button class="step right" data-photo="1">›</button><div class="dots">${Array.from({ length: n }, (_, k) => `<i class="${k === photo ? 'on' : ''}"></i>`).join('')}</div>` : '')
+        + (it.audio ? `<audio id="audio" src="${url(`photos/${id}/audio.mp3`)}" autoplay loop></audio>` : '');
+      return;
+    }
+    e.innerHTML = `<video id="video" src="${url(`videos/${id}.mp4`)}" controls autoplay playsinline loop></video>`;
+    $('video').addEventListener('error', () => {
+      e.innerHTML = `<div class="error">${it.state === 'ok' ? 'The browser could not open this file. If the archive lives in a cloud drive in streaming mode, it may still be syncing.' : 'Not downloaded yet: the run is still going.'}<br><br><a href="${link(id)}" target="_blank" rel="noopener">Open on TikTok</a></div>`;
+    });
+  }
+
+  function sheet() {
+    const id = view[current], it = D.items[id], m = marks[id];
+    $('sheet').innerHTML = `
+      <div class="author">@${esc(it.a)}</div><div class="nick">${esc(it.n)}</div>
+      <div class="desc">${esc(it.t)}</div>
+      <div class="meta">${it.l != null ? `<span>${num(it.l)} likes · ${num(it.v)} views · ${num(it.k)} comments</span>` : ''}${it.c ? `<span>${date(it.c)}</span>` : ''}${it.m ? `<span>♪ ${esc(it.m)}</span>` : ''}</div>
+      <div class="chips">${(inCollections[id] || []).map((c) => `<span>${esc(c)}</span>`).join('')}</div>
+      <div class="buttons">
+        <button class="star ${m === 's' ? 'on' : ''}" data-mark="s">${STAR} Star</button>
+        <button class="trash ${m === 't' ? 'on' : ''}" data-mark="t">${TRASH} Trash</button>
+        <a href="${link(id)}" target="_blank" rel="noopener">${OUT} TikTok</a>
+      </div>
+      <div class="counter">${current + 1} / ${view.length}</div>
+      <div class="help">↑ ↓ next video · ← → next photo · space pause · S star · D trash · esc close</div>`;
+  }
+
+  function open(i) { current = i; photo = 0; stage(); sheet(); $('modal').classList.add('open'); }
+  function close() { $('stage').innerHTML = ''; $('modal').classList.remove('open'); current = -1; }
+  function move(n) { if (!view.length) return; current = (current + n + view.length) % view.length; photo = 0; stage(); sheet(); }
+  function stepPhoto(n) { const it = D.items[view[current]]; if (it?.type !== 'photos') return; photo = (photo + n + it.p) % it.p; const a = $('audio'); const t = a?.currentTime; stage(); if (a && t) $('audio').currentTime = t; }
+
+  $('list').addEventListener('click', (e) => { const b = e.target.closest('.col'); if (!b) return; collection = b.dataset.c || null; list(); refilter(); window.scrollTo(0, 0); });
+  $('picker').addEventListener('change', (e) => { collection = e.target.value || null; list(); refilter(); });
+  $('search').addEventListener('input', (e) => { query = e.target.value; refilter(); });
+  $('filter').addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; filter = b.dataset.f; for (const x of $('filter').children) x.setAttribute('aria-pressed', x === b); refilter(); });
+  $('grid').addEventListener('click', (e) => {
+    const c = e.target.closest('.card'); if (!c) return;
+    const b = e.target.closest('[data-mark]'); if (b) return mark(c.dataset.id, b.dataset.mark);
+    if (e.target.closest('[data-open]')) open(+c.dataset.i);
+  });
+  $('sheet').addEventListener('click', (e) => { const b = e.target.closest('[data-mark]'); if (b) mark(view[current], b.dataset.mark); });
+  $('stage').addEventListener('click', (e) => { const b = e.target.closest('[data-photo]'); if (b) stepPhoto(+b.dataset.photo); });
+  $('close').addEventListener('click', close);
+  $('modal').addEventListener('click', (e) => { if (e.target.id === 'modal') close(); });
+  $('modal').addEventListener('wheel', (e) => { if (e.target.closest('.sheet')) return; e.preventDefault(); move(e.deltaY > 0 ? 1 : -1); }, { passive: false });
+  document.addEventListener('keydown', (e) => {
+    if (current < 0 || e.target.tagName === 'INPUT') return;
+    const v = $('video');
+    if (e.key === 'Escape') close();
+    else if (e.key === 'ArrowDown') { e.preventDefault(); move(1); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); move(-1); }
+    else if (e.key === 'ArrowRight') stepPhoto(1);
+    else if (e.key === 'ArrowLeft') stepPhoto(-1);
+    else if (e.key === ' ') { e.preventDefault(); const m = v || $('audio'); if (m) m.paused ? m.play() : m.pause(); }
+    else if (e.key.toLowerCase() === 's') mark(view[current], 's');
+    else if (e.key.toLowerCase() === 'd') mark(view[current], 't');
+  });
+  $('theme').addEventListener('click', () => {
+    const dark = getComputedStyle(document.documentElement).getPropertyValue('--page').trim() === '#0e0e0e';
+    document.documentElement.dataset.theme = dark ? 'light' : 'dark';
+    try { localStorage.setItem('tiktok-archive-theme', document.documentElement.dataset.theme); } catch {}
+  });
+  $('export').addEventListener('click', () => {
+    const out = { exported: new Date().toISOString(), starred: [], trashed: [] };
+    for (const [id, m] of Object.entries(marks)) (m === 's' ? out.starred : out.trashed).push(id);
+    const a = Object.assign(document.createElement('a'), {
+      href: URL.createObjectURL(new Blob([JSON.stringify(out, null, 1)], { type: 'application/json' })),
+      download: `tiktok-decisions-${out.exported.slice(0, 10)}.json`,
+    });
+    a.click();
+  });
+
+  list(); refilter();
+})();
+</script>
+</body>
+</html>
