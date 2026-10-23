@@ -172,7 +172,12 @@ A prompt that works:
   That one cookie is a firewall token bound to the browser. `download.mjs` drops it from a temp copy
   of your cookies.
 - **Collections report more items than they return.** TikTok keeps counting deleted and
-  now-private videos. In one account, 8,990 declared became 7,856 real items.
+  now-private videos. In one account, 8,990 declared became 8,185 real items.
+- **TikTok's pagination lies sometimes.** It can answer `hasMore: false` long before the end: one
+  extraction got 77 of 236 items in a collection, and 240 of 410 in another. `extract.js` reads each
+  collection again until a pass adds nothing new.
+- **Two manifests from the same day are fine.** `build.mjs` picks the newest by the extraction date
+  inside each file, not by filename.
 - **Threads.** 3 threads gave about 25 videos a minute, and 6 gave about 75. The bottleneck is
   TikTok's per-request latency, not bandwidth. Going far beyond 6 risks real blocks.
 - **Size.** H.264 is heavier than HEVC. The average was about 11.5 MB per item, so plan around 90 GB

@@ -59,14 +59,27 @@
   });
 
   const out = { account: me.uniqueId, extracted: new Date().toISOString(), collections: [] };
-  for (const c of collections) {
-    const items = [];
+  const page = async (collectionId) => {
+    const found = [];
     for (let cursor = '0', more = true; more; ) {
-      const d = await api('collection/item_list', { collectionId: c.collectionId, count: '30', cursor, sourceType: '113' });
-      items.push(...(d.itemList || []).map(item));
+      const d = await api('collection/item_list', { collectionId, count: '30', cursor, sourceType: '113' });
+      found.push(...(d.itemList || []).map(item));
       more = !!d.hasMore; cursor = String(d.cursor ?? 0);
       await wait(400);
     }
+    return found;
+  };
+
+  for (const c of collections) {
+    // TikTok sometimes says hasMore: false long before the end: one real run got 77 of 236 items.
+    // So each collection is read again until a pass adds nothing new.
+    const byId = new Map();
+    for (let pass = 1; pass <= 4; pass++) {
+      const before = byId.size;
+      for (const it of await page(c.collectionId)) if (!byId.has(it.id)) byId.set(it.id, it);
+      if (pass > 1 && byId.size === before) break;
+    }
+    const items = [...byId.values()];
     out.collections.push({ id: c.collectionId, name: c.name, total: c.total, items });
     console.log(`${c.name}: ${items.length} of ${c.total}`);
     window.__tiktokProgress = `${out.collections.length}/${collections.length} collections`;

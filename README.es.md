@@ -166,7 +166,12 @@ Un pedido que funciona:
 - **`_waftokenid` rompe yt-dlp.** Con las cookies enteras, TikTok devolvía 403 a todo. Esa cookie es
   un token del firewall atado al navegador, y `download.mjs` la saca de una copia temporal.
 - **Las colecciones declaran más items de los que devuelven.** TikTok sigue contando los borrados y
-  los que se hicieron privados. En una cuenta, 8.990 declarados fueron 7.856 reales.
+  los que se hicieron privados. En una cuenta, 8.990 declarados fueron 8.185 reales.
+- **La paginación de TikTok a veces miente.** Puede responder `hasMore: false` mucho antes del final:
+  una extracción trajo 77 de 236 items de una colección, y 240 de 410 de otra. `extract.js` vuelve a
+  leer cada colección hasta que una pasada no sume nada nuevo.
+- **Dos manifiestos del mismo día no son problema.** `build.mjs` elige el más nuevo por la fecha de
+  extracción que trae adentro, no por el nombre del archivo.
 - **Hilos.** Con 3 bajaba unos 25 videos por minuto, y con 6, unos 75. El freno es la latencia de
   TikTok por pedido, no el ancho de banda. Muy por encima de 6 se arriesga un bloqueo de verdad.
 - **Tamaño.** H.264 pesa más que HEVC. El promedio fue de unos 11,5 MB por item, así que contá unos

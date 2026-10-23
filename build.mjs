@@ -35,9 +35,11 @@ out ||= join(archive, 'viewer.html');
 
 // The newest manifest wins: it is the state of the collections today
 const manifestsDir = join(archive, 'manifests');
-const manifests = existsSync(manifestsDir) ? readdirSync(manifestsDir).filter((f) => f.endsWith('.json')).sort() : [];
+// By the extraction date inside each file, not by filename: two runs on the same day don't sort
+const manifests = existsSync(manifestsDir) ? readdirSync(manifestsDir).filter((f) => f.endsWith('.json')) : [];
 if (!manifests.length) { console.error(`No manifests in ${manifestsDir}: run download.mjs first`); process.exit(1); }
-const manifest = JSON.parse(readFileSync(join(manifestsDir, manifests.at(-1)), 'utf8'));
+const manifest = manifests.map((f) => JSON.parse(readFileSync(join(manifestsDir, f), 'utf8')))
+  .sort((a, b) => Date.parse(a.extracted) - Date.parse(b.extracted)).at(-1);
 
 const decisionsPath = join(archive, 'decisions.json');
 const decisions = existsSync(decisionsPath) ? JSON.parse(readFileSync(decisionsPath, 'utf8')) : { starred: [], trashed: [] };
